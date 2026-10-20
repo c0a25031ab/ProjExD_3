@@ -3,7 +3,10 @@ import random
 import sys
 import time
 import pygame as pg
-import math  
+import math 
+
+
+
 WIDTH = 1100
 HEIGHT = 650
 NUM_OF_BOMBS = 5
