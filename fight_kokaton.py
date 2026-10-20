@@ -186,7 +186,7 @@ def main():
             if beam.rct.colliderect(bomb.rct):
                 beam = None
                 bomb = None
-
+                bird.change_img(2, screen)
 # こうかとんと爆弾衝突
         if bomb is not None:
             if bird.rct.colliderect(bomb.rct):
