@@ -37,6 +37,8 @@ class Bird:
         (0, +5): pg.transform.rotozoom(img, -90, 0.9),
         (+5, +5): pg.transform.rotozoom(img, -45, 0.9),
     }
+
+    # 微修正 Issue#1
     def __init__(self, xy: tuple[int, int]):
         self.img = __class__.imgs[(+5, 0)]
         self.rct: pg.Rect = self.img.get_rect()
