@@ -148,19 +148,18 @@ class Score:
         self.img = self.fonto.render(f"Score: {self.score}", True, self.color)
         screen.blit(self.img, (100, HEIGHT-50))
 
-
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("fig/pg_bg.jpg")
     bird = Bird((300, 200))
-    
+
     bombs = []
     for _ in range(NUM_OF_BOMBS):
         bombs.append(Bomb((255, 0, 0), 10))
 
-    beam = None 
-    score = Score() 
+    beams = []
+    score = Score()
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -168,14 +167,13 @@ def main():
             if event.type == pg.QUIT:
                 return
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-               
-                beam = Beam(bird)
+                beams.append(Beam(bird))
 
         screen.blit(bg_img, [0, 0])
 
+       
         for bomb in bombs:
-            if bird.rct.colliderect(bomb.rct):
-            
+            if bomb is not None and bird.rct.colliderect(bomb.rct):
                 bird.change_img(8, screen)
                 fonto = pg.font.Font(None, 80)
                 txt = fonto.render("Game Over", True, (255, 0, 0))
@@ -184,25 +182,32 @@ def main():
                 time.sleep(1)
                 return
 
-        for i,bomb in enumerate (bombs):
-            if beam is not None:
+      
+        for i, bomb in enumerate(bombs):
+            if bomb is None:
+                continue   
+            for j, beam in enumerate(beams):
+                if beam is None:
+                    continue
                 if beam.rct.colliderect(bomb.rct):
-                    beam = None
                     bombs[i] = None
+                    beams[j] = None
                     bird.change_img(6, screen)
-                    score.score += 1 
-                    pg.display.update()
+                    score.score += 1
 
+  
         bombs = [bomb for bomb in bombs if bomb is not None]
+        beams = [b for b in beams if b is not None and check_bound(b.rct)[0]]
+
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-        if beam is not None:
+
+        for beam in beams:
             beam.update(screen)
         for bomb in bombs:
             bomb.update(screen)
 
-        score.update(screen) 
-
+        score.update(screen)
         pg.display.update()
         tmr += 1
         clock.tick(50)
@@ -212,3 +217,4 @@ if __name__ == "__main__":
     main()
     pg.quit()
     sys.exit()
+
