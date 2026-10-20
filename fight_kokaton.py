@@ -191,8 +191,15 @@ def main():
         if bomb is not None:
             if bird.rct.colliderect(bomb.rct):
                 bird.change_img(8, screen)
+                black_surface = pg.Surface((WIDTH, HEIGHT))
+                black_surface.set_alpha(128) # 透明度0~255，128是半黑
+                black_surface.fill((0,0,0))
+                screen.blit(black_surface, (0,0))
+                font = pg.font.Font(None, 80)
+                text = font.render("GAME OVER", True, (255,255,255))
+                screen.blit(text, (WIDTH//2 - text.get_width()//2, HEIGHT//2 - text.get_height()//2))
                 pg.display.update()
-                time.sleep(1)
+                time.sleep(2) 
                 return
 
         key_lst = pg.key.get_pressed()
