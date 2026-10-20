@@ -59,6 +59,10 @@ class Bird:
             self.dire = tuple(sum_mv) 
         screen.blit(self.img, self.rct)
 
+
+
+        
+
 class Beam:
     def __init__(self, bird:"Bird"):
        
